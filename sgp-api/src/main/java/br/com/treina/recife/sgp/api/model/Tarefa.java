@@ -41,7 +41,7 @@ public class Tarefa {
     
     @Column(nullable = false)
     @Enumerated(EnumType.STRING)
-    private PrioridadeTarefa priodidade;
+    private PrioridadeTarefa prioridade;
     
     @Column(nullable = false)
     @Enumerated(EnumType.STRING)
