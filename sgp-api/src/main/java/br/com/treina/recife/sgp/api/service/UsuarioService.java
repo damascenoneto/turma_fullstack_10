@@ -1,7 +1,6 @@
 package br.com.treina.recife.sgp.api.service;
 
-import java.time.LocalDate;
-import java.time.Period;
+
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
@@ -26,25 +25,8 @@ public class UsuarioService {
         List<UsuarioDTO> dtos = new ArrayList<>();
 
         for (Usuario usuario : usuarios){
-            LocalDate dataAtual = LocalDate.now();
-            LocalDate dataNascimento = usuario.getDataNascimento();
-
-            Period periodo = Period.between(dataNascimento, dataAtual);
-
-            Integer idade = periodo.getYears();
-
-
-            UsuarioDTO dto = new UsuarioDTO(
-                usuario.getId(),
-                usuario.getNome(),
-                usuario.getEmail(),
-                usuario.getDataNascimento(),
-                idade,
-                usuario.getStatus()
-
-            );
             
-            dtos.add(dto);
+            dtos.add(usuario.tDto());
         }
         return dtos;
 
@@ -54,8 +36,12 @@ public class UsuarioService {
 
     // SELECT * FROM TB_USUARIOS WHERE ID=?
 
-    public Optional<Usuario> obterDadosDoUsuario(Long id){
-        return usuarioRepository.findById(id);
+    public UsuarioDTO obterDadosDoUsuario(Long id){
+        Optional<Usuario> usuario = usuarioRepository.findById(id);
+        if (usuario.isPresent()) {
+            return usuario.get().tDto();
+        }
+        return null;
     }
 
     // INSERT INTO TB_USUARIOS...
@@ -74,6 +60,8 @@ public class UsuarioService {
     public void excluirUsuario(Long id){
         usuarioRepository.deleteById(id);
     }
+
+
 
 
 }
