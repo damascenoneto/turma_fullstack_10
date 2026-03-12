@@ -1,7 +1,9 @@
 package br.com.treina.recife.sgp.api.model;
 
 import java.time.LocalDate;
+import java.time.Period;
 
+import br.com.treina.recife.sgp.api.dto.ProjetoDTO;
 import br.com.treina.recife.sgp.api.enums.StatusProjeto;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
@@ -47,6 +49,25 @@ public class Projeto {
     @ManyToOne
     @JoinColumn(nullable = false, name = "usuario_resp_id")
     private Usuario responsavel;
+
+    public ProjetoDTO tDto(){
+        Period periodo = Period.between(dataInicio, LocalDate.now());
+
+        
+
+        return new ProjetoDTO(
+            id, 
+            nome, 
+            descricao, 
+            dataInicio, 
+            dataConclusao,
+            periodo.getDays(), 
+            status, 
+            responsavel
+        );
+        
+        
+    }
 
 
     

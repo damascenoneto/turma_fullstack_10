@@ -14,8 +14,10 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+import br.com.treina.recife.sgp.api.dto.CredenciaisDTO;
 import br.com.treina.recife.sgp.api.dto.UsuarioDTO;
 import br.com.treina.recife.sgp.api.model.Usuario;
 import br.com.treina.recife.sgp.api.service.UsuarioService;
@@ -73,6 +75,30 @@ public class UsuarioController {
 
         return ResponseEntity.ok(usuarioService.atualizUsuario(id, dados).tDto());
     }
+
+    @GetMapping("/buscaPorCpf") 
+    // exemplo de chamada à api http://localhost:8080/api/usuarios/buscaPorCpf?cpf=12345678900
+    public ResponseEntity<UsuarioDTO> consultarPeloCPF(@RequestParam String cpf){
+        UsuarioDTO usuario = usuarioService.buscarUsuarioPeloCpf(cpf);
+
+        if (Objects.isNull(usuario)) {
+            return ResponseEntity.notFound().build();
+            
+        }
+        return ResponseEntity.ok(usuario);
+    }
+
+    @GetMapping("/BuscaPorCredenciais")
+    public ResponseEntity<UsuarioDTO> consultarPelasCredenciais(@RequestBody CredenciaisDTO credenciais){
+        UsuarioDTO usuario = usuarioService.buscarUsuarioPeloEmailSenha(credenciais.email(), credenciais.senha());
+
+        if(Objects.isNull(usuario)){
+            return ResponseEntity.notFound().build();
+        }
+        return ResponseEntity.ok(usuario);
+    }
+
+
 
 
 }

@@ -30,8 +30,6 @@ public class UsuarioService {
         }
         return dtos;
 
-        
-        
     }
 
     // SELECT * FROM TB_USUARIOS WHERE ID=?
@@ -60,6 +58,28 @@ public class UsuarioService {
     public void excluirUsuario(Long id){
         usuarioRepository.deleteById(id);
     }
+
+    // SELECT * FROM TB_USUARIOS WHERE CPF = ? 
+    public UsuarioDTO buscarUsuarioPeloCpf(String cpf){
+        Optional<Usuario> usuario = usuarioRepository.findByCpf(cpf);
+
+        if (usuario.isPresent()) {
+            return usuario.get().tDto();
+        }
+        return null;
+    }
+
+    public UsuarioDTO buscarUsuarioPeloEmailSenha(String email, String senha){
+        Optional<Usuario> usuario = usuarioRepository.findByEmailAndSenha(email, senha);
+
+        if (usuario.isPresent()) {
+            return usuario.get().tDto();
+        }
+        return null;
+    }
+
+    
+
 
 
 
